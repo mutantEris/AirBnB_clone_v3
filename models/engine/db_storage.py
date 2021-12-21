@@ -20,6 +20,7 @@ classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
 
 
+
 class DBStorage:
     """interaacts with the MySQL database"""
     __engine = None
@@ -74,3 +75,19 @@ class DBStorage:
     def close(self):
         """call remove() method on the private session attribute"""
         self.__session.remove()
+
+        def get(self, cls, id):
+            """Returns the object based on the class and its ID, or None if not found"""
+            from models import storage
+            key = str(cls.__name__) + '.' + id
+            return self.__objects.get(key)
+
+        def count(self, cls=None):
+            """Returns the number of objects in storage matching the given class. If no class is passed, \
+returns the count of all objects in storage."""
+            from models import storage
+            x = 0
+            wumbo = storage.all().values()
+            for object in wumbo:
+                x += 1
+                return x
