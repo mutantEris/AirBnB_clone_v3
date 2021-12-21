@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from models import storage
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -72,25 +73,20 @@ class FileStorage:
     def get(self, cls, id):
         """Returns the object based on the
         class and its ID, or None if not found"""
-        from models import storage
-        if type(cls) != str:
-            cls = cls.__name__
-        key = cls + '.' + id
-        return self.__objects.get(key)
+        wumbo = ("{}.{}".format(cls.__name__, id))
+        if keyString in self.all(cls).keys():
+            return self.all(cls)[keyString]
+        else:
+            return None
 
     def count(self, cls=None):
         """Returns the number of objects in storage matching the given class.
         If no class is passed, returns the count of all objects in storage."""
-        from models import storage
-        if cls:
-            wumbo = storage.all(cls).values()
-            x = 0
-            for object in wumbo:
-                x += 1
-                return x
+        wumbo = 0
+        if !cls:
+            for iter in classes.values():
+                wumbo += len(storage.all(iter).values())
+                return wumbo
         else:
-            wumbo = storage.all().values()
-            x = 0
-            for object in wumbo:
-                x += 1
-                return x
+            wumbo += len(storage.all(cls).values())
+            return wumbo
