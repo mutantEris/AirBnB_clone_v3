@@ -15,7 +15,7 @@ from os import getenv
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models import storage
+import models
 
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -77,7 +77,7 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
-        """Returns the object based on the class and its ID,
+        """gives the object based on the class and its ID,
         or None if not found"""
         wumbo = ("{}.{}".format(cls.__name__, id))
         if keyString in self.all(cls).keys():
@@ -86,13 +86,12 @@ class DBStorage:
             return None
 
     def count(self, cls=None):
-        """Returns the number of objects in storage matching the given class.
+        """gives the number of objects in storage matching the given class.
         If no class is passed, returns the count of all objects in storage."""
         wumbo = 0
-        if !cls:
+        if not cls:
             for iter in classes.values():
-                wumbo += len(storage.all(iter).values())
-                return wumbo
+                wumbo += len(models.storage.all(iter).values())
         else:
-            wumbo += len(storage.all(cls).values())
-            return wumbo
+            wumbo += len(models.storage.all(cls).values())
+        return wumbo
