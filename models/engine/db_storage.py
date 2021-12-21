@@ -86,8 +86,15 @@ class DBStorage:
         """Returns the number of objects in storage matching the given class.
         If no class is passed, returns the count of all objects in storage."""
         from models import storage
-        x = 0
-        wumbo = storage.all().values()
-        for object in wumbo:
-            x += 1
-            return x
+        if cls:
+            wumbo = storage.all(cls).values()
+            x = 0
+            for object in wumbo:
+                x += 1
+                return x
+        else:
+            x = 0
+            wumbo = storage.all().values()
+            for object in wumbo:
+                x += 1
+                return x
