@@ -20,9 +20,9 @@ classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
 class FileStorage:
     """serializes instances to a JSON file & deserializes back to instances"""
 
-    # string - path to the JSON file
+    string - path to the JSON file
     __file_path = "file.json"
-    # dictionary - empty but will store all objects by <class name>.id
+    dictionary - empty but will store all objects by <class name>.id
     __objects = {}
 
     def all(self, cls=None):
@@ -74,8 +74,10 @@ class FileStorage:
         """Returns the object based on the
         class and its ID, or None if not found"""
         wumbo = ("{}.{}".format(cls.__name__, id))
-        if wumbo in self.all(cls).keys():
-            return self.all(cls)[wumbo]
+        """ if wumbo in self.all(cls).keys():
+            return self.all(cls)[wumbo]"""
+        if cls in classes.values() and id and type(id) == str:
+            return self.__objects.get(cls.__name__ + '.' + id, None)
         else:
             return None
 
